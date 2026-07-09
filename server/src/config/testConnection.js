@@ -1,16 +1,16 @@
-import pool from './database.js';
+import db from './database.js';
 
-async function testConnection() {
+async function testDatabase() {
   try {
-    const connection = await pool.getConnection();
+    const connection = await db.getConnection();
 
-    console.log('✅ MySQL Connected Successfully');
+    console.log('✅ MySQL Database Connected Successfully');
 
     connection.release();
   } catch (error) {
-    console.error('❌ Database Connection Failed');
-    console.error(error.message);
+    console.log('❌ Database Connection Failed');
+    console.log(error.message);
   }
 }
 
-testConnection();
+testDatabase();
