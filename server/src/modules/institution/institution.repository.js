@@ -1,0 +1,68 @@
+import db from '../../config/database.js';
+
+export async function createInstitution(data) {
+  const {
+    institution_name,
+    short_name,
+    institution_code,
+    institution_type,
+    email = null,
+    phone = null,
+    website = null,
+    logo = null,
+    address = null,
+    city = null,
+    state = null,
+    country = 'Nigeria',
+  } = data;
+
+  const [result] = await db.execute(
+    `
+      INSERT INTO institutions
+      (
+        institution_name,
+        short_name,
+        institution_code,
+        institution_type,
+        email,
+        phone,
+        website,
+        logo,
+        address,
+        city,
+        state,
+        country
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `,
+    [
+      institution_name,
+      short_name,
+      institution_code,
+      institution_type,
+      email,
+      phone,
+      website,
+      logo,
+      address,
+      city,
+      state,
+      country,
+    ],
+  );
+
+  return result.insertId;
+}
+
+export async function findInstitutionByCode(code) {
+  const [rows] = await db.execute(
+    `
+      SELECT *
+      FROM institutions
+      WHERE institution_code = ?
+    `,
+    [code],
+  );
+
+  return rows[0];
+}
