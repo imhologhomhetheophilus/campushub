@@ -1,8 +1,12 @@
 import {
   createInstitution,
   findInstitutionByCode,
+  getAllInstitutions,
 } from './institution.repository.js';
 
+// ===============================
+// Create Institution
+// ===============================
 export async function createInstitutionService(data) {
   const existing = await findInstitutionByCode(data.institution_code);
 
@@ -10,7 +14,14 @@ export async function createInstitutionService(data) {
     throw new Error('Institution code already exists.');
   }
 
-  const id = await createInstitution(data);
+  const institutionId = await createInstitution(data);
 
-  return id;
+  return institutionId;
+}
+
+// ===============================
+// Get All Institutions
+// ===============================
+export async function getAllInstitutionsService() {
+  return await getAllInstitutions();
 }

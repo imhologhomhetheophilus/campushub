@@ -1,13 +1,13 @@
-import { createInstitutionService } from './institution.service.js';
+import {
+  createInstitutionService,
+  getAllInstitutionsService,
+} from './institution.service.js';
 
+// ===============================
+// Create Institution
+// ===============================
 export async function createInstitution(req, res) {
   try {
-    // Debug: Print everything received from Postman
-    console.log('==============================');
-    console.log('Institution Request Body:');
-    console.log(req.body);
-    console.log('==============================');
-
     const institutionId = await createInstitutionService(req.body);
 
     return res.status(201).json({
@@ -16,12 +16,31 @@ export async function createInstitution(req, res) {
       institution_id: institutionId,
     });
   } catch (error) {
-    console.error('==============================');
-    console.error('Institution Error:');
     console.error(error);
-    console.error('==============================');
 
     return res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
+
+// ===============================
+// Get All Institutions
+// ===============================
+export async function getAllInstitutions(req, res) {
+  try {
+    const institutions = await getAllInstitutionsService();
+
+    return res.status(200).json({
+      success: true,
+      count: institutions.length,
+      data: institutions,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
       success: false,
       message: error.message,
     });

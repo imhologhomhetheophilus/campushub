@@ -1,5 +1,8 @@
 import db from '../../config/database.js';
 
+// ===============================
+// Create Institution
+// ===============================
 export async function createInstitution(data) {
   const {
     institution_name,
@@ -18,22 +21,22 @@ export async function createInstitution(data) {
 
   const [result] = await db.execute(
     `
-      INSERT INTO institutions
-      (
-        institution_name,
-        short_name,
-        institution_code,
-        institution_type,
-        email,
-        phone,
-        website,
-        logo,
-        address,
-        city,
-        state,
-        country
-      )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO institutions
+    (
+      institution_name,
+      short_name,
+      institution_code,
+      institution_type,
+      email,
+      phone,
+      website,
+      logo,
+      address,
+      city,
+      state,
+      country
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `,
     [
       institution_name,
@@ -54,15 +57,44 @@ export async function createInstitution(data) {
   return result.insertId;
 }
 
+// ===============================
+// Find Institution By Code
+// ===============================
 export async function findInstitutionByCode(code) {
   const [rows] = await db.execute(
     `
-      SELECT *
-      FROM institutions
-      WHERE institution_code = ?
+    SELECT *
+    FROM institutions
+    WHERE institution_code = ?
     `,
     [code],
   );
 
   return rows[0];
+}
+
+// ===============================
+// Get All Institutions
+// ===============================
+export async function getAllInstitutions() {
+  const [rows] = await db.execute(`
+    SELECT
+      institution_id,
+      institution_name,
+      short_name,
+      institution_code,
+      institution_type,
+      email,
+      phone,
+      website,
+      city,
+      state,
+      country,
+      is_active,
+      created_at
+    FROM institutions
+    ORDER BY institution_name ASC
+  `);
+
+  return rows;
 }
