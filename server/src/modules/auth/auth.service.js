@@ -13,6 +13,34 @@ export async function findUserByEmail(email) {
 
   return rows[0];
 }
+export async function findUserWithRole(email) {
+  const [rows] = await db.execute(
+    `
+        SELECT
+            u.user_id,
+            u.institution_id,
+            u.role_id,
+            r.role_name,
+            u.first_name,
+            u.middle_name,
+            u.last_name,
+            u.email,
+            u.phone,
+            u.password_hash,
+            u.gender,
+            u.profile_image,
+            u.is_active,
+            u.email_verified
+        FROM users u
+        INNER JOIN roles r
+            ON u.role_id = r.role_id
+        WHERE u.email = ?
+        `,
+    [email],
+  );
+
+  return rows[0];
+}
 
 // Create new user
 export async function createUser(userData) {
