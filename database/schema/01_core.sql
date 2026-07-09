@@ -1,8 +1,22 @@
--- =====================================================
--- CampusHub Database
--- Module: 01_core.sql
--- Version: 1.0.0
--- =====================================================
+/*
+==========================================================
+CampusHub
+Module: 01_core.sql
+Version: 1.0.0
+Author: Job Jacob
+Description:
+Core database schema for CampusHub.
+
+Contains:
+- Database creation
+- Institutions
+- Roles
+- Faculties
+- Departments
+- Programmes
+- Levels
+==========================================================
+*/
 
 -- Create Database
 CREATE DATABASE IF NOT EXISTS campushub_db
@@ -150,5 +164,84 @@ CREATE TABLE departments (
 
     CONSTRAINT uq_department_code
         UNIQUE (institution_id, department_code)
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- =====================================================
+-- TABLE: programmes
+-- =====================================================
+
+CREATE TABLE programmes (
+    programme_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    institution_id INT UNSIGNED NOT NULL,
+    department_id INT UNSIGNED NOT NULL,
+
+    programme_name VARCHAR(150) NOT NULL,
+    programme_code VARCHAR(20) NOT NULL,
+
+    award_type ENUM(
+        'ND',
+        'HND',
+        'BSc',
+        'BA',
+        'BEng',
+        'BTech',
+        'PGD',
+        'MSc',
+        'MBA',
+        'PhD',
+        'Other'
+    ) NOT NULL,
+
+    duration_years TINYINT UNSIGNED NOT NULL,
+
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_programme_institution
+        FOREIGN KEY (institution_id)
+        REFERENCES institutions(institution_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_programme_department
+        FOREIGN KEY (department_id)
+        REFERENCES departments(department_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT uq_programme_name
+        UNIQUE (institution_id, department_id, programme_name, award_type),
+
+    CONSTRAINT uq_programme_code
+        UNIQUE (institution_id, programme_code)
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- =====================================================
+-- TABLE: levels
+-- =====================================================
+
+CREATE TABLE levels (
+    level_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    programme_id INT UNSIGNED NOT NULL,
+
+    level_name VARCHAR(30) NOT NULL,
+    level_order TINYINT UNSIGNED NOT NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_level_programme
+        FOREIGN KEY (programme_id)
+        REFERENCES programmes(programme_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT uq_programme_level
+        UNIQUE (programme_id, level_name)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
