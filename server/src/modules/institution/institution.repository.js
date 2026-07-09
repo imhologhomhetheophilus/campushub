@@ -98,3 +98,90 @@ export async function getAllInstitutions() {
 
   return rows;
 }
+// ===============================
+// Get Institution By ID
+// ===============================
+export async function getInstitutionById(id) {
+  const [rows] = await db.execute(
+    `
+    SELECT
+      institution_id,
+      institution_name,
+      short_name,
+      institution_code,
+      institution_type,
+      email,
+      phone,
+      website,
+      logo,
+      address,
+      city,
+      state,
+      country,
+      is_active,
+      created_at,
+      updated_at
+    FROM institutions
+    WHERE institution_id = ?
+    `,
+    [id],
+  );
+
+  return rows[0];
+}
+// ===============================
+// Update Institution
+// ===============================
+export async function updateInstitution(id, data) {
+  const {
+    institution_name,
+    short_name,
+    institution_code,
+    institution_type,
+    email = null,
+    phone = null,
+    website = null,
+    logo = null,
+    address = null,
+    city = null,
+    state = null,
+    country = 'Nigeria',
+  } = data;
+
+  const [result] = await db.execute(
+    `
+    UPDATE institutions
+    SET
+      institution_name = ?,
+      short_name = ?,
+      institution_code = ?,
+      institution_type = ?,
+      email = ?,
+      phone = ?,
+      website = ?,
+      logo = ?,
+      address = ?,
+      city = ?,
+      state = ?,
+      country = ?
+    WHERE institution_id = ?
+    `,
+    [
+      institution_name,
+      short_name,
+      institution_code,
+      institution_type,
+      email,
+      phone,
+      website,
+      logo,
+      address,
+      city,
+      state,
+      country,
+      id,
+    ],
+  );
+
+  return result.affectedRows;
+}
