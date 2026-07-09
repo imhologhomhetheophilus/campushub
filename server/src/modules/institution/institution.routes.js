@@ -5,6 +5,7 @@ import {
   getAllInstitutions,
   getInstitutionById,
   updateInstitution,
+  deleteInstitution,
 } from './institution.controller.js';
 
 import { authenticate } from '../../middlewares/auth.middleware.js';
@@ -25,4 +26,5 @@ router.post('/', authenticate, authorize(1), createInstitution);
 router.get('/', authenticate, getAllInstitutions);
 router.get('/:id', authenticate, getInstitutionById);
 router.put('/:id', authenticate, authorize(1), updateInstitution);
+router.delete('/:id', authenticate, authorize(1), deleteInstitution);
 export default router;

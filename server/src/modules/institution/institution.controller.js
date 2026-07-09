@@ -3,6 +3,7 @@ import {
   getAllInstitutionsService,
   getInstitutionByIdService,
   updateInstitutionService,
+  deleteInstitutionService,
 } from './institution.service.js';
 
 // ===============================
@@ -83,6 +84,26 @@ export async function updateInstitution(req, res) {
     });
   } catch (error) {
     return res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
+// ===============================
+// Delete Institution
+// ===============================
+export async function deleteInstitution(req, res) {
+  try {
+    const { id } = req.params;
+
+    await deleteInstitutionService(id);
+
+    return res.status(200).json({
+      success: true,
+      message: 'Institution deleted successfully.',
+    });
+  } catch (error) {
+    return res.status(404).json({
       success: false,
       message: error.message,
     });

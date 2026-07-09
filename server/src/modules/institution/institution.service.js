@@ -4,6 +4,7 @@ import {
   getAllInstitutions,
   getInstitutionById,
   updateInstitution,
+  deleteInstitution,
 } from './institution.repository.js';
 
 // ===============================
@@ -50,6 +51,20 @@ export async function updateInstitutionService(id, data) {
   }
 
   await updateInstitution(id, data);
+
+  return true;
+}
+// ===============================
+// Delete Institution
+// ===============================
+export async function deleteInstitutionService(id) {
+  const institution = await getInstitutionById(id);
+
+  if (!institution) {
+    throw new Error('Institution not found.');
+  }
+
+  await deleteInstitution(id);
 
   return true;
 }

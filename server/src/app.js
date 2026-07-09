@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import authRoutes from './modules/auth/auth.routes.js';
 import studentRoutes from './modules/student/student.routes.js';
 import institutionRoutes from './modules/institution/institution.routes.js';
+import facultyRoutes from './modules/faculty/faculty.routes.js';
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(cookieParser());
 app.use('/api/auth', authRoutes);
 app.use('/api/student', studentRoutes);
 app.use('/api/institutions', institutionRoutes);
+app.use('/api/faculties', facultyRoutes);
 
 // Test Route
 app.get('/', (req, res) => {

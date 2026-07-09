@@ -185,3 +185,17 @@ export async function updateInstitution(id, data) {
 
   return result.affectedRows;
 }
+// ===============================
+// Delete Institution
+// ===============================
+export async function deleteInstitution(id) {
+  const [result] = await db.execute(
+    `
+    DELETE FROM institutions
+    WHERE institution_id = ?
+    `,
+    [id],
+  );
+
+  return result.affectedRows;
+}
