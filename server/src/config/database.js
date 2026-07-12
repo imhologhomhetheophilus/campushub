@@ -12,6 +12,9 @@ const db = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
+
+  // Return DATE and DATETIME values as strings instead of JavaScript Date objects
+  dateStrings: true,
 });
 
 export default db;

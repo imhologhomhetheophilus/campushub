@@ -1,22 +1,22 @@
 import {
-  createStudentService,
-  getAllStudentsService,
-  getStudentByIdService,
-  updateStudentService,
-  deleteStudentService,
-} from './student.service.js';
+  createLevelService,
+  getAllLevelsService,
+  getLevelByIdService,
+  updateLevelService,
+  deleteLevelService,
+} from './level.service.js';
 
 // ===================================
-// Create Student
+// Create Level
 // ===================================
-export async function createStudent(req, res) {
+export async function createLevel(req, res) {
   try {
-    const studentId = await createStudentService(req.body);
+    const levelId = await createLevelService(req.body);
 
     return res.status(201).json({
       success: true,
-      message: 'Student created successfully.',
-      student_id: studentId,
+      message: 'Level created successfully.',
+      level_id: levelId,
     });
   } catch (error) {
     return res.status(400).json({
@@ -27,16 +27,16 @@ export async function createStudent(req, res) {
 }
 
 // ===================================
-// Get All Students
+// Get All Levels
 // ===================================
-export async function getAllStudents(req, res) {
+export async function getAllLevels(req, res) {
   try {
-    const students = await getAllStudentsService();
+    const levels = await getAllLevelsService();
 
     return res.status(200).json({
       success: true,
-      count: students.length,
-      data: students,
+      count: levels.length,
+      data: levels,
     });
   } catch (error) {
     return res.status(500).json({
@@ -47,17 +47,17 @@ export async function getAllStudents(req, res) {
 }
 
 // ===================================
-// Get Student By ID
+// Get Level By ID
 // ===================================
-export async function getStudentById(req, res) {
+export async function getLevelById(req, res) {
   try {
     const { id } = req.params;
 
-    const student = await getStudentByIdService(id);
+    const level = await getLevelByIdService(id);
 
     return res.status(200).json({
       success: true,
-      data: student,
+      data: level,
     });
   } catch (error) {
     return res.status(404).json({
@@ -68,20 +68,20 @@ export async function getStudentById(req, res) {
 }
 
 // ===================================
-// Update Student
+// Update Level
 // ===================================
-export async function updateStudent(req, res) {
+export async function updateLevel(req, res) {
   try {
     const { id } = req.params;
 
-    await updateStudentService(id, req.body);
+    await updateLevelService(id, req.body);
 
     return res.status(200).json({
       success: true,
-      message: 'Student updated successfully.',
+      message: 'Level updated successfully.',
     });
   } catch (error) {
-    return res.status(400).json({
+    return res.status(404).json({
       success: false,
       message: error.message,
     });
@@ -89,17 +89,17 @@ export async function updateStudent(req, res) {
 }
 
 // ===================================
-// Delete Student
+// Delete Level
 // ===================================
-export async function deleteStudent(req, res) {
+export async function deleteLevel(req, res) {
   try {
     const { id } = req.params;
 
-    await deleteStudentService(id);
+    await deleteLevelService(id);
 
     return res.status(200).json({
       success: true,
-      message: 'Student deleted successfully.',
+      message: 'Level deleted successfully.',
     });
   } catch (error) {
     return res.status(404).json({

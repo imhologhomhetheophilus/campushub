@@ -1,22 +1,22 @@
 import {
-  createStudentService,
-  getAllStudentsService,
-  getStudentByIdService,
-  updateStudentService,
-  deleteStudentService,
-} from './student.service.js';
+  createDepartmentService,
+  getAllDepartmentsService,
+  getDepartmentByIdService,
+  updateDepartmentService,
+  deleteDepartmentService,
+} from './department.service.js';
 
 // ===================================
-// Create Student
+// Create Department
 // ===================================
-export async function createStudent(req, res) {
+export async function createDepartment(req, res) {
   try {
-    const studentId = await createStudentService(req.body);
+    const departmentId = await createDepartmentService(req.body);
 
     return res.status(201).json({
       success: true,
-      message: 'Student created successfully.',
-      student_id: studentId,
+      message: 'Department created successfully.',
+      department_id: departmentId,
     });
   } catch (error) {
     return res.status(400).json({
@@ -25,18 +25,17 @@ export async function createStudent(req, res) {
     });
   }
 }
-
 // ===================================
-// Get All Students
+// Get All Departments
 // ===================================
-export async function getAllStudents(req, res) {
+export async function getAllDepartments(req, res) {
   try {
-    const students = await getAllStudentsService();
+    const departments = await getAllDepartmentsService();
 
     return res.status(200).json({
       success: true,
-      count: students.length,
-      data: students,
+      count: departments.length,
+      data: departments,
     });
   } catch (error) {
     return res.status(500).json({
@@ -45,19 +44,18 @@ export async function getAllStudents(req, res) {
     });
   }
 }
-
 // ===================================
-// Get Student By ID
+// Get Department By ID
 // ===================================
-export async function getStudentById(req, res) {
+export async function getDepartmentById(req, res) {
   try {
     const { id } = req.params;
 
-    const student = await getStudentByIdService(id);
+    const department = await getDepartmentByIdService(id);
 
     return res.status(200).json({
       success: true,
-      data: student,
+      data: department,
     });
   } catch (error) {
     return res.status(404).json({
@@ -66,19 +64,18 @@ export async function getStudentById(req, res) {
     });
   }
 }
-
 // ===================================
-// Update Student
+// Update Department
 // ===================================
-export async function updateStudent(req, res) {
+export async function updateDepartment(req, res) {
   try {
     const { id } = req.params;
 
-    await updateStudentService(id, req.body);
+    await updateDepartmentService(id, req.body);
 
     return res.status(200).json({
       success: true,
-      message: 'Student updated successfully.',
+      message: 'Department updated successfully.',
     });
   } catch (error) {
     return res.status(400).json({
@@ -87,19 +84,18 @@ export async function updateStudent(req, res) {
     });
   }
 }
-
 // ===================================
-// Delete Student
+// Delete Department
 // ===================================
-export async function deleteStudent(req, res) {
+export async function deleteDepartment(req, res) {
   try {
     const { id } = req.params;
 
-    await deleteStudentService(id);
+    await deleteDepartmentService(id);
 
     return res.status(200).json({
       success: true,
-      message: 'Student deleted successfully.',
+      message: 'Department deleted successfully.',
     });
   } catch (error) {
     return res.status(404).json({

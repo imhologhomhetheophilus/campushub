@@ -1,22 +1,22 @@
 import {
-  createStudentService,
-  getAllStudentsService,
-  getStudentByIdService,
-  updateStudentService,
-  deleteStudentService,
-} from './student.service.js';
+  createCourseService,
+  getAllCoursesService,
+  getCourseByIdService,
+  updateCourseService,
+  deleteCourseService,
+} from './course.service.js';
 
 // ===================================
-// Create Student
+// Create Course
 // ===================================
-export async function createStudent(req, res) {
+export async function createCourse(req, res) {
   try {
-    const studentId = await createStudentService(req.body);
+    const courseId = await createCourseService(req.body);
 
     return res.status(201).json({
       success: true,
-      message: 'Student created successfully.',
-      student_id: studentId,
+      message: 'Course created successfully.',
+      course_id: courseId,
     });
   } catch (error) {
     return res.status(400).json({
@@ -27,16 +27,16 @@ export async function createStudent(req, res) {
 }
 
 // ===================================
-// Get All Students
+// Get All Courses
 // ===================================
-export async function getAllStudents(req, res) {
+export async function getAllCourses(req, res) {
   try {
-    const students = await getAllStudentsService();
+    const courses = await getAllCoursesService();
 
     return res.status(200).json({
       success: true,
-      count: students.length,
-      data: students,
+      count: courses.length,
+      data: courses,
     });
   } catch (error) {
     return res.status(500).json({
@@ -47,17 +47,17 @@ export async function getAllStudents(req, res) {
 }
 
 // ===================================
-// Get Student By ID
+// Get Course By ID
 // ===================================
-export async function getStudentById(req, res) {
+export async function getCourseById(req, res) {
   try {
     const { id } = req.params;
 
-    const student = await getStudentByIdService(id);
+    const course = await getCourseByIdService(id);
 
     return res.status(200).json({
       success: true,
-      data: student,
+      data: course,
     });
   } catch (error) {
     return res.status(404).json({
@@ -68,17 +68,17 @@ export async function getStudentById(req, res) {
 }
 
 // ===================================
-// Update Student
+// Update Course
 // ===================================
-export async function updateStudent(req, res) {
+export async function updateCourse(req, res) {
   try {
     const { id } = req.params;
 
-    await updateStudentService(id, req.body);
+    await updateCourseService(id, req.body);
 
     return res.status(200).json({
       success: true,
-      message: 'Student updated successfully.',
+      message: 'Course updated successfully.',
     });
   } catch (error) {
     return res.status(400).json({
@@ -89,17 +89,17 @@ export async function updateStudent(req, res) {
 }
 
 // ===================================
-// Delete Student
+// Delete Course
 // ===================================
-export async function deleteStudent(req, res) {
+export async function deleteCourse(req, res) {
   try {
     const { id } = req.params;
 
-    await deleteStudentService(id);
+    await deleteCourseService(id);
 
     return res.status(200).json({
       success: true,
-      message: 'Student deleted successfully.',
+      message: 'Course deleted successfully.',
     });
   } catch (error) {
     return res.status(404).json({

@@ -1,23 +1,23 @@
 import {
-  createInstitution,
-  findInstitutionByCode,
-  getAllInstitutions,
-  getInstitutionById,
-  updateInstitution,
-  deleteInstitution,
+  createInstitutionRepository,
+  findInstitutionByCodeRepository,
+  getAllInstitutionsRepository,
+  getInstitutionByIdRepository,
+  updateInstitutionRepository,
+  deleteInstitutionRepository,
 } from './institution.repository.js';
 
 // ===============================
 // Create Institution
 // ===============================
 export async function createInstitutionService(data) {
-  const existing = await findInstitutionByCode(data.institution_code);
+  const existing = await findInstitutionByCodeRepository(data.institution_code);
 
   if (existing) {
     throw new Error('Institution code already exists.');
   }
 
-  const institutionId = await createInstitution(data);
+  const institutionId = await createInstitutionRepository(data);
 
   return institutionId;
 }
@@ -26,13 +26,14 @@ export async function createInstitutionService(data) {
 // Get All Institutions
 // ===============================
 export async function getAllInstitutionsService() {
-  return await getAllInstitutions();
+  return await getAllInstitutionsRepository();
 }
+
 // ===============================
 // Get Institution By ID
 // ===============================
 export async function getInstitutionByIdService(id) {
-  const institution = await getInstitutionById(id);
+  const institution = await getInstitutionByIdRepository(id);
 
   if (!institution) {
     throw new Error('Institution not found.');
@@ -40,31 +41,33 @@ export async function getInstitutionByIdService(id) {
 
   return institution;
 }
+
 // ===============================
 // Update Institution
 // ===============================
 export async function updateInstitutionService(id, data) {
-  const institution = await getInstitutionById(id);
+  const institution = await getInstitutionByIdRepository(id);
 
   if (!institution) {
     throw new Error('Institution not found.');
   }
 
-  await updateInstitution(id, data);
+  await updateInstitutionRepository(id, data);
 
   return true;
 }
+
 // ===============================
 // Delete Institution
 // ===============================
 export async function deleteInstitutionService(id) {
-  const institution = await getInstitutionById(id);
+  const institution = await getInstitutionByIdRepository(id);
 
   if (!institution) {
     throw new Error('Institution not found.');
   }
 
-  await deleteInstitution(id);
+  await deleteInstitutionRepository(id);
 
   return true;
 }

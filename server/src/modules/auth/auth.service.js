@@ -1,50 +1,37 @@
-import db from '../../config/database.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
-// Find user by email
-export async function findUserByEmail(email) {
-  const [rows] = await db.execute(
-    `
-        SELECT *
-        FROM users
-        WHERE email = ?
-        `,
-    [email],
-  );
+import {
+  findUserByEmail,
+  findUserWithRole,
+  createUser,
+} from './auth.repository.js';
 
-  return rows[0];
-}
-export async function findUserWithRole(email) {
-  const [rows] = await db.execute(
-    `
-        SELECT
-            u.user_id,
-            u.institution_id,
-            u.role_id,
-            r.role_name,
-            u.first_name,
-            u.middle_name,
-            u.last_name,
-            u.email,
-            u.phone,
-            u.password_hash,
-            u.gender,
-            u.profile_image,
-            u.is_active,
-            u.email_verified
-        FROM users u
-        INNER JOIN roles r
-            ON u.role_id = r.role_id
-        WHERE u.email = ?
-        `,
-    [email],
-  );
-
-  return rows[0];
-}
-
-// Create new user
-export async function createUser(userData) {
+// ===================================
+// Register User
+// ===================================
+export async function registerService(data) {
   const {
+    institution_id,
+    role_id,
+    first_name,
+    middle_name,
+    last_name,
+    email,
+    phone,
+    password,
+    gender,
+  } = data;
+
+  const existingUser = await findUserByEmail(email);
+
+  if (existingUser) {
+    throw new Error('Email already exists.');
+  }
+
+  const password_hash = await bcrypt.hash(password, 10);
+
+  const userId = await createUser({
     institution_id,
     role_id,
     first_name,
@@ -54,38 +41,56 @@ export async function createUser(userData) {
     phone,
     password_hash,
     gender,
-  } = userData;
+  });
 
-  const [result] = await db.execute(
-    `
-        INSERT INTO users
-        (
-            institution_id,
-            role_id,
-            first_name,
-            middle_name,
-            last_name,
-            email,
-            phone,
-            password_hash,
-            gender
-        )
+  return userId;
+}
 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `,
+// ===================================
+// Login User
+// ===================================
+export async function loginService(email, password) {
+  if (!email) {
+    throw new Error('Email is required.');
+  }
 
-    [
-      institution_id,
-      role_id,
-      first_name,
-      middle_name,
-      last_name,
-      email,
-      phone,
-      password_hash,
-      gender,
-    ],
+  if (!password) {
+    throw new Error('Password is required.');
+  }
+
+  const user = await findUserWithRole(email);
+
+  if (!user) {
+    throw new Error('Invalid email or password.');
+  }
+
+  if (!user.is_active) {
+    throw new Error('Account has been disabled.');
+  }
+
+  const passwordMatch = await bcrypt.compare(password, user.password_hash);
+
+  if (!passwordMatch) {
+    throw new Error('Invalid email or password.');
+  }
+
+  const token = jwt.sign(
+    {
+      user_id: user.user_id,
+      institution_id: user.institution_id,
+      role_id: user.role_id,
+      role: user.role_name,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_EXPIRES_IN || '1d',
+    },
   );
 
-  return result.insertId;
+  delete user.password_hash;
+
+  return {
+    token,
+    user,
+  };
 }

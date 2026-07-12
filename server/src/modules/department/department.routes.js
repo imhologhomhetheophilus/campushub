@@ -1,12 +1,12 @@
 import express from 'express';
 
 import {
-  createInstitution,
-  getAllInstitutions,
-  getInstitutionById,
-  updateInstitution,
-  deleteInstitution,
-} from './institution.controller.js';
+  createDepartment,
+  getAllDepartments,
+  getDepartmentById,
+  updateDepartment,
+  deleteDepartment,
+} from './department.controller.js';
 
 import { authenticate } from '../../middlewares/auth.middleware.js';
 import { authorize } from '../../middlewares/role.middleware.js';
@@ -15,32 +15,32 @@ import { ROLES } from '../../constants/roles.js';
 const router = express.Router();
 
 // ===================================
-// Institution Routes
+// Department Routes
 // ===================================
 
-// Create Institution
-router.post('/', authenticate, authorize(ROLES.SUPER_ADMIN), createInstitution);
+// Create Department
+router.post('/', authenticate, authorize(ROLES.SUPER_ADMIN), createDepartment);
 
-// Get All Institutions
-router.get('/', authenticate, getAllInstitutions);
+// Get All Departments
+router.get('/', authenticate, getAllDepartments);
 
-// Get Institution By ID
-router.get('/:id', authenticate, getInstitutionById);
+// Get Department By ID
+router.get('/:id', authenticate, getDepartmentById);
 
-// Update Institution
+// Update Department
 router.put(
   '/:id',
   authenticate,
   authorize(ROLES.SUPER_ADMIN),
-  updateInstitution,
+  updateDepartment,
 );
 
-// Delete Institution
+// Delete Department
 router.delete(
   '/:id',
   authenticate,
   authorize(ROLES.SUPER_ADMIN),
-  deleteInstitution,
+  deleteDepartment,
 );
 
 export default router;

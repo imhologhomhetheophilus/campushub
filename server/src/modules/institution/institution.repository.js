@@ -3,7 +3,7 @@ import db from '../../config/database.js';
 // ===============================
 // Create Institution
 // ===============================
-export async function createInstitution(data) {
+export async function createInstitutionRepository(data) {
   const {
     institution_name,
     short_name,
@@ -60,7 +60,7 @@ export async function createInstitution(data) {
 // ===============================
 // Find Institution By Code
 // ===============================
-export async function findInstitutionByCode(code) {
+export async function findInstitutionByCodeRepository(code) {
   const [rows] = await db.execute(
     `
     SELECT *
@@ -76,7 +76,7 @@ export async function findInstitutionByCode(code) {
 // ===============================
 // Get All Institutions
 // ===============================
-export async function getAllInstitutions() {
+export async function getAllInstitutionsRepository() {
   const [rows] = await db.execute(`
     SELECT
       institution_id,
@@ -101,7 +101,7 @@ export async function getAllInstitutions() {
 // ===============================
 // Get Institution By ID
 // ===============================
-export async function getInstitutionById(id) {
+export async function getInstitutionByIdRepository(id) {
   const [rows] = await db.execute(
     `
     SELECT
@@ -132,7 +132,7 @@ export async function getInstitutionById(id) {
 // ===============================
 // Update Institution
 // ===============================
-export async function updateInstitution(id, data) {
+export async function updateInstitutionRepository(id, data) {
   const {
     institution_name,
     short_name,
@@ -188,7 +188,7 @@ export async function updateInstitution(id, data) {
 // ===============================
 // Delete Institution
 // ===============================
-export async function deleteInstitution(id) {
+export async function deleteInstitutionRepository(id) {
   const [result] = await db.execute(
     `
     DELETE FROM institutions
